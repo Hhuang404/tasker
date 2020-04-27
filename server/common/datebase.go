@@ -33,6 +33,7 @@ func InitDB() *gorm.DB {
 	return db
 }
 
+// 获取连接实例
 func GetDB() *gorm.DB {
 	return DB
 }

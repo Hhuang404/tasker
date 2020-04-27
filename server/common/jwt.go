@@ -8,11 +8,13 @@ import (
 
 var jwtKey = []byte("a_secret")
 
+// 定义返回结构
 type Claims struct {
 	UserId uint
 	jwt.StandardClaims
 }
 
+// 颁发 token
 func ReleaseToken(user model.User) (string, error) {
 	expirationTime := time.Now().Add(7 * 24 * time.Hour)
 	claims := &Claims{
@@ -32,7 +34,8 @@ func ReleaseToken(user model.User) (string, error) {
 	return tokenString, err
 }
 
-func ParseToken(tokenString string) (*jwt.Token,*Claims,error) {
+// 解析 token
+func ParseToken(tokenString string) (*jwt.Token, *Claims, error) {
 	claims := &Claims{}
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 		return jwtKey, nil

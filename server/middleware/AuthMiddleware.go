@@ -8,6 +8,7 @@ import (
 	"tasker/server/model"
 )
 
+// jwt 验证中间件
 func AuthMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tokenString := ctx.GetHeader("Authorization")
@@ -31,14 +32,14 @@ func AuthMiddleware() gin.HandlerFunc {
 		DB := common.GetDB()
 		var user model.User
 		DB.First(&user, userId)
-		if user.ID==0 {
+		if user.ID == 0 {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"code": 401, "msg": "权限不足"})
 			ctx.Abort()
 			return
 		}
 
 		// 用户存在 将 user 的信息写入上下文
-		ctx.Set("user",user)
+		ctx.Set("user", user)
 		ctx.Next()
 	}
 }
