@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
-	"tasker/server/model"
 )
 
 var DB *gorm.DB
@@ -29,8 +28,8 @@ func InitDB() *gorm.DB {
 	if err != nil {
 		panic("failed to connect database , err: " + err.Error())
 	}
-	db.AutoMigrate(&model.User{})
 	DB = db
+	db.LogMode(true)
 	return db
 }
 

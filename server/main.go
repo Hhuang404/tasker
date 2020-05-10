@@ -28,7 +28,7 @@ func InitConfig() {
 	if err != nil {
 		panic(err)
 	}
-	viper.SetConfigName("application")
+	viper.SetConfigName("db")
 	viper.SetConfigType("yml")
 	viper.AddConfigPath(workDir + "/config")
 	readErr := viper.ReadInConfig()

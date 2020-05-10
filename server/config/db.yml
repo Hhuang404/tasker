@@ -4,7 +4,7 @@ datasource:
   driverName: mysql
   host: 47.102.204.252
   port: 3306
-  database: ginessential
+  database: tasker
   username: root
   password: hhwoai44
   charset: utf8

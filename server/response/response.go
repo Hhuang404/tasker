@@ -10,17 +10,33 @@ import (
 //	data:xxxx
 //	msg:xx
 //}
+
+type Response struct {
+	Code int         `json:"code"`
+	Data interface{} `json:"data,omitempty"`
+	Msg  string      `json:"msg"`
+}
+
+const (
+	SUCCESS = 1
+	ERROR   = 0
+)
+
 // 自定义返回
-func Response(ctx *gin.Context, httpStatus int, code int, data gin.H, msg string) {
-	ctx.JSON(httpStatus, gin.H{"code": code, "data": data, "msg": msg})
+func result(code int, data interface{}, msg string, c *gin.Context) {
+	c.JSON(http.StatusOK, Response{
+		code,
+		data,
+		msg,
+	})
 }
 
 // 成功返回
-func Success(ctx *gin.Context, data gin.H, msg string) {
-	Response(ctx, http.StatusOK, 200, data, msg)
+func Success(msg string, data interface{}, ctx *gin.Context) {
+	result(SUCCESS, data, msg, ctx)
 }
 
 // 失败返回
-func Fail(ctx *gin.Context, data gin.H, msg string) {
-	Response(ctx, http.StatusOK, 400, data, msg)
+func Fail(msg string, ctx *gin.Context) {
+	result(ERROR, nil, msg, ctx)
 }
