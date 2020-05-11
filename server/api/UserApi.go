@@ -1,4 +1,4 @@
-package controller
+package api
 
 import (
 	"github.com/gin-gonic/gin"
@@ -7,11 +7,11 @@ import (
 	"log"
 	"net/http"
 	"tasker/server/common"
+	"tasker/server/constant"
 	"tasker/server/dto"
 	"tasker/server/model"
 	"tasker/server/response"
 	"tasker/server/utils"
-	"time"
 )
 
 // 用户注册
@@ -40,7 +40,6 @@ func Register(ctx *gin.Context) {
 		Nickname: nickname,
 		Password: string(hasPassword),
 	}
-	newUser.CreatedAt = time.Now()
 	DB.Create(&newUser)
 	response.Success("注册成功", nil, ctx)
 }
@@ -71,6 +70,7 @@ func Login(ctx *gin.Context) {
 		response.Fail("系统错误", ctx)
 		log.Printf("token generate error : %v", err)
 	}
+	ctx.SetCookie("token", "Bearer "+token, constant.MaxAgeSecond, "/", constant.DoMain, false, true)
 	// 返回结果
 	ctx.JSON(http.StatusOK, gin.H{
 		"code":  1,

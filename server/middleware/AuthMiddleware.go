@@ -12,8 +12,11 @@ import (
 func AuthMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tokenString := ctx.GetHeader("Authorization")
+		if tokenString == "" {
+			tokenString, _ = ctx.Cookie("token")
+		}
 
-		if tokenString == "" || !strings.HasPrefix(tokenString, "Bearer ") {
+		if !strings.HasPrefix(tokenString, "Bearer ") {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"code": 401, "msg": "权限不足"})
 			ctx.Abort()
 			return

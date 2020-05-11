@@ -2,6 +2,7 @@ package common
 
 import (
 	"github.com/dgrijalva/jwt-go"
+	"tasker/server/constant"
 	"tasker/server/model"
 	"time"
 )
@@ -16,13 +17,13 @@ type Claims struct {
 
 // 颁发 token
 func ReleaseToken(user model.User) (string, error) {
-	expirationTime := time.Now().Add(7 * 24 * time.Hour)
+	expirationTime := time.Now().Add(constant.MaxAge)
 	claims := &Claims{
 		UserId: user.ID,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 			IssuedAt:  time.Now().Unix(),
-			Issuer:    "huanghao",
+			Issuer:    "hh",
 			Subject:   "user_token",
 		},
 	}

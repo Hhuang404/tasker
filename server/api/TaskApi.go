@@ -1,8 +1,8 @@
-package controller
+package api
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
+	"strconv"
 	"tasker/server/common"
 	"tasker/server/constant"
 	"tasker/server/model"
@@ -10,11 +10,7 @@ import (
 	"tasker/server/utils"
 )
 
-const (
-	// 1 2 3 4 5 6 7 记忆
-	YYYYmmDDHHssMM = "2006-01-02 15:04:05"
-)
-
+// 获取任务列表
 func GetList(ctx *gin.Context) {
 	var db = common.DB
 	uid := ctx.Param("userId")
@@ -25,8 +21,7 @@ func GetList(ctx *gin.Context) {
 	db.Where("user_id = ?", uid).Find(&tasks)
 	taskListVo := make([]*model.TaskListVo, 0)
 	for _, task := range tasks {
-		timeStr := task.CreatedAt.Format(YYYYmmDDHHssMM)
-		fmt.Println("时间： ", timeStr)
+		timeStr := task.CreatedAt.Format(constant.YearMonthDayHourMinuteSecond)
 		taskVo := &model.TaskListVo{
 			CreatedAt: timeStr,
 			ID:        task.ID,
@@ -35,4 +30,28 @@ func GetList(ctx *gin.Context) {
 		taskListVo = append(taskListVo, taskVo)
 	}
 	response.Success(constant.QuerySuccess, taskListVo, ctx)
+}
+
+// 添加任务
+func AddTask(ctx *gin.Context) {
+	var db = common.DB
+	name := ctx.PostForm("name")
+	userId := ctx.PostForm("userId")
+	if utils.ParamIsNull(name, userId) {
+		response.Fail(constant.ParamNull, ctx)
+		return
+	}
+	uid, err := strconv.Atoi(userId)
+	if err != nil {
+		response.Fail(constant.ParamError, ctx)
+		return
+	}
+	if db.Create(&model.Task{
+		Name:   name,
+		UserId: uint(uid),
+	}).Error != nil {
+		response.Fail(constant.DuplicateEntity, ctx)
+		return
+	}
+	response.Success(constant.AddSuccess, nil, ctx)
 }
