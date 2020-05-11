@@ -23,16 +23,16 @@ func GetList(ctx *gin.Context) {
 	}
 	var tasks []*model.Task
 	db.Where("user_id = ?", uid).Find(&tasks)
-	var taskListVo []*model.TaskListVo
-	//todo 初始化问题
-	for i, task := range tasks {
+	taskListVo := make([]*model.TaskListVo, 0)
+	for _, task := range tasks {
 		timeStr := task.CreatedAt.Format(YYYYmmDDHHssMM)
 		fmt.Println("时间： ", timeStr)
-		taskListVo[i] = &model.TaskListVo{
+		taskVo := &model.TaskListVo{
 			CreatedAt: timeStr,
 			ID:        task.ID,
 			Name:      task.Name,
 		}
+		taskListVo = append(taskListVo, taskVo)
 	}
 	response.Success(constant.QuerySuccess, taskListVo, ctx)
 }
