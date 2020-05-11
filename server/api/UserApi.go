@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"tasker/server/common"
 	"tasker/server/constant"
-	"tasker/server/dto"
 	"tasker/server/model"
 	"tasker/server/response"
 	"tasker/server/utils"
@@ -82,7 +81,7 @@ func Login(ctx *gin.Context) {
 // 获取当前用户信息
 func Info(ctx *gin.Context) {
 	user, _ := ctx.Get("user")
-	ctx.JSON(http.StatusOK, gin.H{"code": 200, "data": gin.H{"username": dto.ToUserDto(user.(model.User))}})
+	ctx.JSON(http.StatusOK, gin.H{"code": 200, "data": gin.H{"username": model.ToUserDto(user.(model.User))}})
 }
 
 // 判断登录账号是否存在

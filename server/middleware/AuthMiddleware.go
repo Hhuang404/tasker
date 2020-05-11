@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 	"tasker/server/common"
+	"tasker/server/constant"
 	"tasker/server/model"
 )
 
@@ -17,7 +18,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 
 		if !strings.HasPrefix(tokenString, "Bearer ") {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"code": 401, "msg": "权限不足"})
+			ctx.JSON(http.StatusUnauthorized, gin.H{"code": 401, "msg": constant.Unauthorized})
 			ctx.Abort()
 			return
 		}
@@ -25,7 +26,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		tokenString = tokenString[7:]
 		token, claims, err := common.ParseToken(tokenString)
 		if err != nil || !token.Valid {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"code": 401, "msg": "权限不足"})
+			ctx.JSON(http.StatusUnauthorized, gin.H{"code": 401, "msg": constant.Unauthorized})
 			ctx.Abort()
 			return
 		}
@@ -36,7 +37,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		var user model.User
 		DB.First(&user, userId)
 		if user.ID == 0 {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"code": 401, "msg": "权限不足"})
+			ctx.JSON(http.StatusUnauthorized, gin.H{"code": 401, "msg": constant.Unauthorized})
 			ctx.Abort()
 			return
 		}
