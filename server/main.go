@@ -17,9 +17,17 @@ func main() {
 	r := gin.Default()
 	r = router.CollectRoute(r)
 	port := viper.GetString("server.port")
+	InitWeb(r)
 	if port != "" {
 		panic(r.Run(":" + port))
 	}
+}
+
+func InitWeb(r *gin.Engine) {
+	r.LoadHTMLGlob("dist/*.html")              // 添加入口index.html
+	r.LoadHTMLFiles("static/*/*")              // 添加资源路径
+	r.Static("/static", "./dist/static")       // 添加资源路径
+	r.StaticFile("/hello/", "dist/index.html") //前端接口
 }
 
 //读取配置文件
