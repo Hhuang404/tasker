@@ -1,4 +1,4 @@
-package handle
+package api
 
 import (
 	"github.com/gin-gonic/gin"
@@ -11,7 +11,7 @@ import (
 )
 
 // 获取任务列表
-func GetList(ctx *gin.Context) {
+func GetTaskList(ctx *gin.Context) {
 	var db = common.DB
 	uid := ctx.Param("userId")
 	if utils.ParamIsNull(uid) {
