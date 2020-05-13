@@ -20,6 +20,8 @@ func GetTaskList(ctx *gin.Context) {
 	var tasks []*model.Task
 	db.Where("user_id = ?", uid).Find(&tasks)
 	taskListVo := make([]*model.TaskListVo, 0)
+
+	// hack 是否有更优雅的实现方式 时间格式化
 	for _, task := range tasks {
 		timeStr := task.CreatedAt.Format(constant.YearMonthDayHourMinuteSecond)
 		taskVo := &model.TaskListVo{
