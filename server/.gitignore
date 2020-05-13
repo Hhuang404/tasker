@@ -1,2 +1,3 @@
 .exe
 utils/oss/oss_config.go
+config/db.yml
