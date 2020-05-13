@@ -17,8 +17,7 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 	r.POST("/api/task/add", middleware.AuthMiddleware(), api.AddTask)        // 添加 task
 
 	// task_detail
-	r.GET("/api/task/detail/:taskId", middleware.AuthMiddleware(), api.GetTaskDetailList) // 获取 task 详情列表
-
+	//r.GET("/api/task/detail/:taskId", middleware.AuthMiddleware(), api.GetTaskDetailList) // 获取 task 详情列表
 
 	return r
 }

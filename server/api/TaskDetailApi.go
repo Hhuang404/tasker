@@ -21,9 +21,8 @@ func GetTaskDetailList(ctx *gin.Context) {
 	response.Success(constant.QuerySuccess, taskDetail, ctx)
 }
 
-
-// 添加 task detail
-func AddTaskDetail(ctx *gin.Context){
-
-
-}
+//// 添加 task detail
+//func AddTaskDetail(ctx *gin.Context){
+//
+//
+//}
