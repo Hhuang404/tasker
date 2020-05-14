@@ -12,7 +12,10 @@ import (
 func main() {
 	InitConfig()
 	db := common.InitDB()
+	conn := common.InitRedisConn()
+
 	defer db.Close()
+	defer conn.Close()
 
 	r := gin.Default()
 	r = router.CollectRoute(r)
@@ -28,7 +31,7 @@ func InitConfig() {
 	if err != nil {
 		panic(err)
 	}
-	viper.SetConfigName("db")
+	viper.SetConfigName("server")
 	viper.SetConfigType("yml")
 	viper.AddConfigPath(workDir + "/config")
 	readErr := viper.ReadInConfig()

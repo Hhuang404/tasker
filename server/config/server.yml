@@ -8,3 +8,6 @@ datasource:
   username: username
   password: password
   charset: utf8
+redis:
+  network: tcp
+  address: ip:port
